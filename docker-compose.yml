@@ -1,27 +1,31 @@
 version: "3"
 services: 
 
+    # frontend:
+    #     build: ./zelda-cookbook-frontend
+    #     ports: 
+    #         - "8000:8000"
+    #     depends_on: 
+    #         - backend
+    
 
-
-    db:
+    backend:
+        build: ./zelda-cookbook-backend
+        depends_on: 
+            - zelda_cookbook
+        ports:
+            -  "3000:3000"
+    zelda_cookbook:
         build: ./postgres
         environment: 
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: postgres
-        
-            ports: 
-              - "5432:5432"
+            POSTGRES_DB: zelda_cookbook
+        ports: 
+            - "5432:5432"
         networks: 
             - app
-        
-    proxy:
-        build: ./nginx
-        ports:
-            - "80:80" 
-        networks: 
-            - app
-        depends_on: 
-            - python
+
 
 networks:
     app:
