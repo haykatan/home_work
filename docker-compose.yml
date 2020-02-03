@@ -1,0 +1,28 @@
+version: "3"
+services: 
+
+
+
+    db:
+        build: ./postgres
+        environment: 
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+        
+            ports: 
+              - "5432:5432"
+        networks: 
+            - app
+        
+    proxy:
+        build: ./nginx
+        ports:
+            - "80:80" 
+        networks: 
+            - app
+        depends_on: 
+            - python
+
+networks:
+    app:
+        driver: bridge
